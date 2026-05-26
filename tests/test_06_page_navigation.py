@@ -1,6 +1,5 @@
 from time import sleep
 
-from pygments import style
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -117,4 +116,3 @@ def test_it_center_slider(driver):
         sleep(0.25)
         assert style != slider_grid.get_attribute('style')
         style = slider_grid.get_attribute('style')
-

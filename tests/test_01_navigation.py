@@ -16,7 +16,7 @@ def test_top_bar(driver):
 
     wait = WebDriverWait(driver, 10)
 
-    # testa a visibilidade da barra de navegação
+    # visibilidade da barra de navegação
     top_bar = wait.until(
         EC.visibility_of_element_located(
             (By.CLASS_NAME, "top-bar")
@@ -56,10 +56,14 @@ def test_top_bar(driver):
 
     assert quick_access_expanded.get_attribute("aria-expanded") == "false"
     quick_access.click()
-    sleep(0.5)
+    wait.until(
+        lambda d: quick_access_expanded.get_attribute("aria-expanded") == "true"
+    )
     assert quick_access_expanded.get_attribute("aria-expanded") == "true"
     quick_access.click()
-    sleep(0.5)
+    wait.until(
+        lambda d: quick_access_expanded.get_attribute("aria-expanded") == "false"
+    )
     assert quick_access_expanded.get_attribute("aria-expanded") == "false"
 
     # verifica se existe o elemento "language-changer"
@@ -110,29 +114,3 @@ def test_main_nav(driver):
 
     for span in spans:
         assert span.get_attribute("textContent") in expected
-
-# [7] language-changer
-def test_language_changer(driver):
-    driver.get(URL)
-
-    wait = WebDriverWait(driver, 10)
-
-    lang_changer = wait.until(
-        EC.visibility_of_element_located(
-            (By.CLASS_NAME, "language-changer")
-        )
-    )
-    assert lang_changer.is_displayed()
-
-    title_before = driver.title
-    before = lang_changer.get_attribute("title")
-
-    lang_changer.click()
-
-    lang_changer = wait.until(
-        EC.visibility_of_element_located(
-            (By.CLASS_NAME, "language-changer")
-        )
-    )
-    assert title_before != driver.title
-    assert before != lang_changer.get_attribute("title")

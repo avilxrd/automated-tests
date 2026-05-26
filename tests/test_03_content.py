@@ -18,7 +18,14 @@ def test_teaser_wrapper(driver):
 
     imgs = teaser_wrapper.find_elements(By.TAG_NAME, "img")
 
+    # scroll
+    driver.execute_script(
+        "arguments[0].scrollIntoView({block: 'center'});",
+        imgs[0]
+    )
+
     for img in imgs:
+        sleep(0.5)
         assert img.is_displayed()
         assert img.get_attribute("src") != ""
         assert img.get_attribute("alt") != NULL
