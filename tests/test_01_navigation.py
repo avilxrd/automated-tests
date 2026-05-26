@@ -56,14 +56,10 @@ def test_top_bar(driver):
 
     assert quick_access_expanded.get_attribute("aria-expanded") == "false"
     quick_access.click()
-    wait.until(
-        lambda d: quick_access_expanded.get_attribute("aria-expanded") == "true"
-    )
+    sleep(0.5)
     assert quick_access_expanded.get_attribute("aria-expanded") == "true"
     quick_access.click()
-    wait.until(
-        lambda d: quick_access_expanded.get_attribute("aria-expanded") == "false"
-    )
+    sleep(0.5)
     assert quick_access_expanded.get_attribute("aria-expanded") == "false"
 
     # verifica se existe o elemento "language-changer"

@@ -65,6 +65,7 @@ def test_text_box(driver):
 
 def test_it_center_slider(driver):
     driver.get(URL)
+
     wait = WebDriverWait(driver, 10)
 
     quick_access_btn = wait.until(
@@ -90,8 +91,15 @@ def test_it_center_slider(driver):
         )
     )
 
-    prev = control_wrapper.find_element(By.XPATH, '//*[@id="main"]/div[1]/div[2]/div[1]')
-    next = control_wrapper.find_element(By.XPATH, '//*[@id="main"]/div[1]/div[2]/div[3]')
+    prev = control_wrapper.find_element(
+        By.XPATH,
+        '//*[@id="main"]/div[1]/div[2]/div[1]'
+    )
+
+    next = control_wrapper.find_element(
+        By.XPATH,
+        '//*[@id="main"]/div[1]/div[2]/div[3]'
+    )
 
     slider_grid = wait.until(
         EC.presence_of_element_located(
@@ -99,20 +107,26 @@ def test_it_center_slider(driver):
         )
     )
 
-    divs = slider_grid.find_elements(By.CLASS_NAME, 'item-wrapper')
+    divs = slider_grid.find_elements(
+        By.CLASS_NAME,
+        'item-wrapper'
+    )
 
-    style = slider_grid.get_attribute('style')
+    def assert_slider_changes(button):
+        old_style = slider_grid.get_attribute('style')
 
-    for div in divs:
-        sleep(0.25)
-        next.click()
-        sleep(0.25)
-        assert style != slider_grid.get_attribute('style')
-        style = slider_grid.get_attribute('style')
+        button.click()
 
-    for div in divs:
-        sleep(0.25)
-        prev.click()
-        sleep(0.25)
-        assert style != slider_grid.get_attribute('style')
-        style = slider_grid.get_attribute('style')
+        wait.until(
+            lambda d: slider_grid.get_attribute('style') != old_style
+        )
+
+        new_style = slider_grid.get_attribute('style')
+
+        assert old_style != new_style
+
+    for _ in divs:
+        assert_slider_changes(next)
+
+    for _ in divs:
+        assert_slider_changes(prev)
