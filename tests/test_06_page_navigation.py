@@ -1,5 +1,6 @@
 from time import sleep
 
+from pygments import style
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -62,3 +63,58 @@ def test_text_box(driver):
     search_bar.clear()
     assert search_bar.get_attribute('value') == ''
     sleep(2)
+
+def test_it_center_slider(driver):
+    driver.get(URL)
+    wait = WebDriverWait(driver, 10)
+
+    quick_access_btn = wait.until(
+        EC.element_to_be_clickable(
+            (By.ID, 'quick-start-control')
+        )
+    )
+    quick_access_btn.click()
+
+    it_center = wait.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="quick-start"]/div/div[2]/div[3]/ul/li[2]/a')
+        )
+    )
+    it_center.click()
+
+    driver.switch_to.window(driver.window_handles[-1])
+
+    # botoes de controle
+    control_wrapper = wait.until(
+        EC.presence_of_element_located(
+            (By.CLASS_NAME, 'control-wrapper')
+        )
+    )
+
+    prev = control_wrapper.find_element(By.XPATH, '//*[@id="main"]/div[1]/div[2]/div[1]')
+    next = control_wrapper.find_element(By.XPATH, '//*[@id="main"]/div[1]/div[2]/div[3]')
+
+    slider_grid = wait.until(
+        EC.presence_of_element_located(
+            (By.CLASS_NAME, 'item-rack')
+        )
+    )
+
+    divs = slider_grid.find_elements(By.CLASS_NAME, 'item-wrapper')
+
+    style = slider_grid.get_attribute('style')
+
+    for div in divs:
+        sleep(0.25)
+        next.click()
+        sleep(0.25)
+        assert style != slider_grid.get_attribute('style')
+        style = slider_grid.get_attribute('style')
+
+    for div in divs:
+        sleep(0.25)
+        prev.click()
+        sleep(0.25)
+        assert style != slider_grid.get_attribute('style')
+        style = slider_grid.get_attribute('style')
+

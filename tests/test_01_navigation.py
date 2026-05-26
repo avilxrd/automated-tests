@@ -4,8 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-#URL= "https://www.rwth-aachen.de"
-URL= "file:///C:/Users/avila/Downloads/RWTH%20Aachen%20University%20_%20Rheinisch-Westf%C3%A4lische%20Technische%20Hochschule%20_%20EN.html"
+URL= "https://www.rwth-aachen.de"
 
 def test_open_site(driver):
     driver.get(URL)
